@@ -2,11 +2,19 @@ package main
 
 import (
 	"fmt"
+	"minion/system"
+	"os"
+
 	"os/exec"
 )
 
 func init() {
+	if os.Geteuid() != 0 {
+		fmt.Println("This program must be run as an administrator.")
+		os.Exit(1)
+	}
 	checkBrew()
+	alwaysOn()
 }
 
 func checkBrew() {
@@ -21,5 +29,12 @@ func checkBrew() {
 		fmt.Println("Failed to get Homebrew version")
 	} else {
 		fmt.Println(string(out))
+	}
+}
+
+func alwaysOn() {
+	err := system.DisableSleep()
+	if err != nil {
+		fmt.Println("Failed to disable sleep:", err)
 	}
 }
