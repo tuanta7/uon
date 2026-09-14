@@ -1,19 +1,28 @@
-# README
+# UON
 
-## About
+CLI tool for quickly setting up an Ubuntu server on a laptop or PC, with everything needed for a lightweight self-hosted environment. Includes:
 
-This is the official Wails React-TS template.
+- No sleep & automatic restart
+- Static IP configuration
+- SSH
+- Docker & Kubernetes (K3s)
+- Ollama, NGINX, Cloudflared
+- Multipass for experimenting with multi-cluster Kubernetes
 
-You can configure the project by editing `wails.json`. More information about the project settings can be found
-here: https://wails.io/docs/reference/project-config
+## Getting Started
 
-## Live Development
+```sh
+go build -o uon
+./uon brew install
+```
 
-To run in live development mode, run `wails dev` in the project directory. This will run a Vite development
-server that will provide very fast hot reload of your frontend changes. If you want to develop in a browser
-and have access to your Go methods, there is also a dev server that runs on http://localhost:34115. Connect
-to this in your browser, and you can call your Go code from devtools.
+## Cobra Quick Start
 
-## Building
+```sh
+go mod init uon
+go get -u github.com/spf13/cobra@latest
 
-To build a redistributable, production mode package, use `wails build`.
+go install github.com/spf13/cobra-cli@latest
+cobra-cli init
+cobra-cli add serve
+```
