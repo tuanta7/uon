@@ -6,7 +6,6 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// brewCmd represents the brew command
 var installCmd = &cobra.Command{
 	Use:   "install",
 	Short: "A brief description of your command",
