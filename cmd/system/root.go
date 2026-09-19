@@ -38,4 +38,5 @@ var Cmd = &cobra.Command{
 
 func init() {
 	Cmd.AddCommand(ipCmd)
+	Cmd.AddCommand(newSleepCommand())
 }
