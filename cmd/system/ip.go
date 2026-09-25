@@ -8,8 +8,6 @@ import (
 	"github.com/tuanta7/uon/internal/system/network"
 )
 
-var ipCmd = newIPCommand()
-
 func newIPCommand() *cobra.Command {
 	var iface, address, gateway string
 	var dhcp bool

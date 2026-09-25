@@ -37,6 +37,7 @@ var Cmd = &cobra.Command{
 }
 
 func init() {
-	Cmd.AddCommand(ipCmd)
+	Cmd.AddCommand(newIPCommand())
 	Cmd.AddCommand(newSleepCommand())
+	Cmd.AddCommand(newSSHCommand())
 }
