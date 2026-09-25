@@ -1,4 +1,4 @@
-package system
+package ssh
 
 import (
 	"bufio"
@@ -12,7 +12,7 @@ import (
 	"github.com/tuanta7/uon/internal/system/remote"
 )
 
-func newSSHCommand() *cobra.Command {
+func Command() *cobra.Command {
 	return newSSHCommandWithActions(remote.IsOpenSSHServerInstalled, remote.InstallOpenSSHServer, remote.ToggleSSH)
 }
 
@@ -22,13 +22,13 @@ func newSSHCommandWithActions(
 	toggle func(context.Context, bool) error,
 ) *cobra.Command {
 	return &cobra.Command{
-		Use:       "ssh <on|off>",
+		Use:       "ssh <enable|disable>",
 		Short:     "Allow or prevent SSH access",
-		Long:      "Turn SSH on to start it and enable it at boot, or off to stop it and disable it at boot.",
-		ValidArgs: []string{"on", "off"},
+		Long:      "Enable SSH to start it now and at boot, or disable it to stop it now and at boot.",
+		ValidArgs: []string{"enable", "disable"},
 		Args:      cobra.MatchAll(cobra.ExactArgs(1), cobra.OnlyValidArgs),
 		RunE: func(cmd *cobra.Command, args []string) error {
-			allowSSH := args[0] == "on"
+			allowSSH := args[0] == "enable"
 			if allowSSH {
 				installed, err := isInstalled(cmd.Context())
 				if err != nil {
@@ -40,7 +40,7 @@ func newSSHCommandWithActions(
 						return err
 					}
 					if !confirmed {
-						_, err := fmt.Fprintln(cmd.OutOrStdout(), "OpenSSH server was not installed; SSH access remains off.")
+						_, err := fmt.Fprintln(cmd.OutOrStdout(), "OpenSSH server was not installed; SSH access remains disabled.")
 						return err
 					}
 					if _, err := fmt.Fprintln(cmd.OutOrStdout(), "Installing openssh-server..."); err != nil {
@@ -56,9 +56,9 @@ func newSSHCommandWithActions(
 				return err
 			}
 
-			message := "SSH access is off."
+			message := "SSH access is disabled."
 			if allowSSH {
-				message = "SSH access is on."
+				message = "SSH access is enabled."
 			}
 			_, err := fmt.Fprintln(cmd.OutOrStdout(), message)
 			return err

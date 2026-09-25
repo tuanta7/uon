@@ -13,10 +13,32 @@ CLI tool for quickly setting up an Ubuntu server on a laptop or PC, with everyth
 
 ```sh
 go install github.com/tuanta7/uon@latest
-uon system ip --interface eth0 --static 192.168.1.10/24 --gateway 192.168.1.1/24
-uon system sleep off # for Ubuntu GUI
-uon system ssh on
+uon system network list
+uon system network static eth0 --address 192.168.1.10/24 --gateway 192.168.1.1/24
+uon system network dhcp eth0
+uon system sleep disable # for Ubuntu GUI
+uon system ssh enable
+uon nginx install
+uon nginx config
+uon nginx run
+uon nginx status
 ```
+
+## NGINX
+
+Manage the Ubuntu NGINX package and service with:
+
+```sh
+uon nginx install # install with apt-get
+uon nginx run     # start now and enable at boot
+uon nginx status  # show installed, active, and enabled states
+uon nginx remove  # remove the package but preserve its configuration
+```
+
+Run `uon nginx config` to see Ubuntu's standard configuration locations and the
+commands for enabling, validating, and reloading a site. Define server blocks in
+`/etc/nginx/sites-available/` and enable them with symbolic links in
+`/etc/nginx/sites-enabled/`.
 
 ## Cobra Quick Start
 

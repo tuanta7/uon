@@ -1,4 +1,4 @@
-package system
+package ssh
 
 import (
 	"context"
@@ -14,8 +14,8 @@ func TestSSHCommandRejectsInvalidArguments(t *testing.T) {
 		want string
 	}{
 		{"missing state", nil, "accepts 1 arg"},
-		{"invalid state", []string{"yes"}, "invalid argument"},
-		{"too many arguments", []string{"on", "off"}, "accepts 1 arg"},
+		{"invalid state", []string{"on"}, "invalid argument"},
+		{"too many arguments", []string{"enable", "disable"}, "accepts 1 arg"},
 	}
 
 	for _, tt := range tests {
@@ -31,7 +31,7 @@ func TestSSHCommandRejectsInvalidArguments(t *testing.T) {
 	}
 }
 
-func TestSSHOnInstallsMissingServerAfterConfirmation(t *testing.T) {
+func TestSSHEnableInstallsMissingServerAfterConfirmation(t *testing.T) {
 	var actions []string
 	cmd := newSSHCommandWithActions(
 		func(context.Context) (bool, error) { return false, nil },
@@ -51,7 +51,7 @@ func TestSSHOnInstallsMissingServerAfterConfirmation(t *testing.T) {
 	var output strings.Builder
 	cmd.SetOut(&output)
 	cmd.SetErr(io.Discard)
-	cmd.SetArgs([]string{"on"})
+	cmd.SetArgs([]string{"enable"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
@@ -59,12 +59,12 @@ func TestSSHOnInstallsMissingServerAfterConfirmation(t *testing.T) {
 	if got := strings.Join(actions, ","); got != "install,toggle" {
 		t.Fatalf("actions = %q, want %q", got, "install,toggle")
 	}
-	if got := output.String(); !strings.Contains(got, "Install it now?") || !strings.Contains(got, "SSH access is on.") {
+	if got := output.String(); !strings.Contains(got, "Install it now?") || !strings.Contains(got, "SSH access is enabled.") {
 		t.Fatalf("output = %q, want installation prompt and success message", got)
 	}
 }
 
-func TestSSHOnDoesNotInstallWithoutConfirmation(t *testing.T) {
+func TestSSHEnableDoesNotInstallWithoutConfirmation(t *testing.T) {
 	installCalled := false
 	toggleCalled := false
 	cmd := newSSHCommandWithActions(
@@ -82,7 +82,7 @@ func TestSSHOnDoesNotInstallWithoutConfirmation(t *testing.T) {
 	var output strings.Builder
 	cmd.SetOut(&output)
 	cmd.SetErr(io.Discard)
-	cmd.SetArgs([]string{"on"})
+	cmd.SetArgs([]string{"enable"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
@@ -90,19 +90,19 @@ func TestSSHOnDoesNotInstallWithoutConfirmation(t *testing.T) {
 	if installCalled || toggleCalled {
 		t.Fatalf("install called = %v, toggle called = %v; want neither", installCalled, toggleCalled)
 	}
-	if !strings.Contains(output.String(), "SSH access remains off") {
+	if !strings.Contains(output.String(), "SSH access remains disabled") {
 		t.Fatalf("output = %q, want declined message", output.String())
 	}
 }
 
-func TestSSHOffDoesNotCheckOrInstallPackage(t *testing.T) {
+func TestSSHDisableDoesNotCheckOrInstallPackage(t *testing.T) {
 	cmd := newSSHCommandWithActions(
 		func(context.Context) (bool, error) {
-			t.Fatal("package check called for ssh off")
+			t.Fatal("package check called for ssh disable")
 			return false, nil
 		},
 		func(context.Context) error {
-			t.Fatal("installer called for ssh off")
+			t.Fatal("installer called for ssh disable")
 			return nil
 		},
 		func(_ context.Context, allow bool) error {
@@ -114,7 +114,7 @@ func TestSSHOffDoesNotCheckOrInstallPackage(t *testing.T) {
 	)
 	cmd.SetOut(io.Discard)
 	cmd.SetErr(io.Discard)
-	cmd.SetArgs([]string{"off"})
+	cmd.SetArgs([]string{"disable"})
 
 	if err := cmd.Execute(); err != nil {
 		t.Fatalf("Execute() error = %v", err)
