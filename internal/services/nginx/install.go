@@ -9,7 +9,7 @@ import (
 
 // Install installs the Ubuntu nginx package.
 func Install(ctx context.Context) error {
-	if err := command.Run(ctx, "apt-get", "install", "-y", "nginx"); err != nil {
+	if err := command.Run(ctx, "apt-get", "install", "-y", "nginx", "libnginx-mod-stream"); err != nil {
 		return fmt.Errorf("install nginx: %w", err)
 	}
 	return nil

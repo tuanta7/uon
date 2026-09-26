@@ -7,7 +7,7 @@ import (
 	nginxservice "github.com/tuanta7/uon/internal/services/nginx"
 )
 
-func newRunCommand() *cobra.Command {
+func runCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "run",
 		Short: "Start NGINX and enable it at boot",

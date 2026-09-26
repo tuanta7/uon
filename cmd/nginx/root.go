@@ -8,10 +8,11 @@ func NewCommand() *cobra.Command {
 		Short: "Manage the NGINX web server",
 		Args:  cobra.NoArgs,
 	}
-	cmd.AddCommand(newInstallCommand())
-	cmd.AddCommand(newRunCommand())
+	cmd.AddCommand(installCommand())
+	cmd.AddCommand(runCommand())
 	cmd.AddCommand(newStatusCommand())
-	cmd.AddCommand(newRemoveCommand())
-	cmd.AddCommand(newConfigCommand())
+	cmd.AddCommand(removeCommand())
+	cmd.AddCommand(configCommand())
+	cmd.AddCommand(loadCommand())
 	return cmd
 }

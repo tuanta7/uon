@@ -6,7 +6,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-func newConfigCommand() *cobra.Command {
+func configCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "config",
 		Short: "Show where to define and enable NGINX configuration",
@@ -17,10 +17,13 @@ Site definitions:   /etc/nginx/sites-available/
 Enabled sites:      /etc/nginx/sites-enabled/
 
 To add a site:
-  1. Create /etc/nginx/sites-available/<site>
-  2. Run: ln -s /etc/nginx/sites-available/<site> /etc/nginx/sites-enabled/<site>
+  1. Create /etc/nginx/sites-available/<site>.conf
+  2. Run: ln -s /etc/nginx/sites-available/<site>.conf /etc/nginx/sites-enabled/<site>.conf
   3. Run: nginx -t
   4. Run: systemctl reload nginx
+
+Use "uon nginx load <file>" for an HTTP site configuration.
+Use "uon nginx load --stream <file>" for a TCP/UDP stream configuration.
 `)
 			return err
 		},

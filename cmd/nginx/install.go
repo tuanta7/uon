@@ -7,7 +7,7 @@ import (
 	nginxservice "github.com/tuanta7/uon/internal/services/nginx"
 )
 
-func newInstallCommand() *cobra.Command {
+func installCommand() *cobra.Command {
 	return &cobra.Command{
 		Use:   "install",
 		Short: "Install NGINX with APT",

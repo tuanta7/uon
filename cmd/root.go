@@ -5,6 +5,7 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"github.com/tuanta7/uon/cmd/dev"
 	"github.com/tuanta7/uon/cmd/nginx"
 	"github.com/tuanta7/uon/cmd/system"
 )
@@ -23,6 +24,7 @@ and install tools for your server.`,
 			return nil
 		},
 	}
+	cmd.AddCommand(dev.NewCommand())
 	cmd.AddCommand(nginx.NewCommand())
 	cmd.AddCommand(system.NewCommand())
 	return cmd
