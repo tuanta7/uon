@@ -55,10 +55,10 @@ func Load(ctx context.Context, sourcePath string, stream bool) error {
 		}
 	}
 
-	if err := command.Run(ctx, "nginx", "-t"); err != nil {
+	if err := command.RunQuietly(ctx, "nginx", "-t"); err != nil {
 		return fmt.Errorf("validate nginx configuration: %w", err)
 	}
-	if err := command.Run(ctx, "systemctl", "reload", "nginx.service"); err != nil {
+	if err := command.RunQuietly(ctx, "systemctl", "reload", "nginx.service"); err != nil {
 		return fmt.Errorf("reload nginx service: %w", err)
 	}
 	return nil

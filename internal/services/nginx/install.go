@@ -9,7 +9,7 @@ import (
 
 // Install installs the Ubuntu nginx package.
 func Install(ctx context.Context) error {
-	if err := command.Run(ctx, "apt-get", "install", "-y", "nginx", "libnginx-mod-stream"); err != nil {
+	if err := command.RunQuietly(ctx, "apt-get", "install", "-y", "nginx", "libnginx-mod-stream"); err != nil {
 		return fmt.Errorf("install nginx: %w", err)
 	}
 	return nil
@@ -17,7 +17,7 @@ func Install(ctx context.Context) error {
 
 // IsInstalled reports whether the nginx Debian package is fully installed.
 func IsInstalled(ctx context.Context) (bool, error) {
-	status, err := command.Output(ctx, "dpkg-query", "--show", "--showformat=${db:Status-Status}", "nginx")
+	status, err := command.Run(ctx, "dpkg-query", "--show", "--showformat=${db:Status-Status}", "nginx")
 	if hasExitCode(err, 1) {
 		return false, nil
 	} else if err != nil {

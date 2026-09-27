@@ -20,7 +20,7 @@ func ToggleSleep(ctx context.Context, allowSleep bool) error {
 	if allowSleep {
 		action = "unmask"
 	}
-	if err := command.Run(ctx, "systemctl", action,
+	if err := command.RunQuietly(ctx, "systemctl", action,
 		"sleep.target",
 		"suspend.target",
 		"hibernate.target",

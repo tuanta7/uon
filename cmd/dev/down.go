@@ -9,7 +9,7 @@ import (
 )
 
 func downCommand() *cobra.Command {
-	return newDownCommand(command.Run)
+	return newDownCommand(command.RunQuietly)
 }
 
 func newDownCommand(run func(context.Context, string, ...string) error) *cobra.Command {

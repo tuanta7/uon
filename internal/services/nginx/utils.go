@@ -9,7 +9,7 @@ import (
 )
 
 func commandSucceedsOrHasStateExit(ctx context.Context, name string, stateExitCode int, args ...string) (bool, error) {
-	err := command.Run(ctx, name, args...)
+	err := command.RunQuietly(ctx, name, args...)
 	if hasExitCode(err, stateExitCode) {
 		return false, nil
 	} else if err != nil {

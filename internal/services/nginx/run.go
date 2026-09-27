@@ -9,7 +9,7 @@ import (
 
 // Run starts nginx immediately and enables it at boot.
 func Run(ctx context.Context) error {
-	if err := command.Run(ctx, "systemctl", "enable", "--now", "nginx.service"); err != nil {
+	if err := command.RunQuietly(ctx, "systemctl", "enable", "--now", "nginx.service"); err != nil {
 		return fmt.Errorf("run nginx service: %w", err)
 	}
 	return nil

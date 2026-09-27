@@ -42,7 +42,7 @@ func Apply(ctx context.Context, iface string, settings Interface) error {
 	if err := writeAtomic(path, data); err != nil {
 		return fmt.Errorf("write Netplan configuration: %w", err)
 	}
-	if err := command.Run(ctx, "netplan", "apply"); err != nil {
+	if err := command.RunQuietly(ctx, "netplan", "apply"); err != nil {
 		return fmt.Errorf("apply Netplan configuration: %w", err)
 	}
 	return nil

@@ -14,7 +14,7 @@ func Remove(ctx context.Context, prune bool) error {
 		// in the nginx-common package
 		args = []string{"purge", "-y", "nginx", "nginx-common", "libnginx-mod-stream"}
 	}
-	if err := command.Run(ctx, "apt-get", args...); err != nil {
+	if err := command.RunQuietly(ctx, "apt-get", args...); err != nil {
 		return fmt.Errorf("remove nginx: %w", err)
 	}
 	return nil

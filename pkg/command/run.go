@@ -7,13 +7,12 @@ import (
 	"strings"
 )
 
-func Run(ctx context.Context, name string, args ...string) error {
-	_, err := Output(ctx, name, args...)
+func RunQuietly(ctx context.Context, name string, args ...string) error {
+	_, err := Run(ctx, name, args...)
 	return err
 }
 
-// Output runs a command and returns its trimmed combined output.
-func Output(ctx context.Context, name string, args ...string) (string, error) {
+func Run(ctx context.Context, name string, args ...string) (string, error) {
 	cmd := exec.CommandContext(ctx, name, args...)
 	output, err := cmd.CombinedOutput()
 	if err != nil {

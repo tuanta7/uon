@@ -12,7 +12,7 @@ import (
 // IsOpenSSHServerInstalled reports whether the openssh-server Debian package is
 // fully installed.
 func IsOpenSSHServerInstalled(ctx context.Context) (bool, error) {
-	status, err := command.Output(ctx, "dpkg-query", "--show", "--showformat=${db:Status-Status}", "openssh-server")
+	status, err := command.Run(ctx, "dpkg-query", "--show", "--showformat=${db:Status-Status}", "openssh-server")
 	if err != nil {
 		var exitErr *exec.ExitError
 		if errors.As(err, &exitErr) && exitErr.ExitCode() == 1 {
@@ -25,7 +25,7 @@ func IsOpenSSHServerInstalled(ctx context.Context) (bool, error) {
 
 // InstallOpenSSHServer installs the Ubuntu OpenSSH server package.
 func InstallOpenSSHServer(ctx context.Context) error {
-	if err := command.Run(ctx, "apt-get", "install", "-y", "openssh-server"); err != nil {
+	if err := command.RunQuietly(ctx, "apt-get", "install", "-y", "openssh-server"); err != nil {
 		return fmt.Errorf("install openssh-server: %w", err)
 	}
 	return nil
@@ -43,7 +43,7 @@ func ToggleSSH(ctx context.Context, allow bool) error {
 	if allow {
 		action = "enable"
 	}
-	if err := command.Run(ctx, "systemctl", action, "--now", "ssh.service"); err != nil {
+	if err := command.RunQuietly(ctx, "systemctl", action, "--now", "ssh.service"); err != nil {
 		return fmt.Errorf("%s SSH service: %w", action, err)
 	}
 	return nil
